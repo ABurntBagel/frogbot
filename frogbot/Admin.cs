@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using NetCord;
+using NetCord.Rest;
 using NetCord.Services.ApplicationCommands;
 
 namespace Frogbot;
@@ -28,7 +29,7 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
 
     [SlashCommand("bonk", "Hit 'em with the sleep bonk.", DefaultGuildUserPermissions = Permissions.ModerateUsers,
         Contexts = [InteractionContextType.Guild])]
-    public async Task<string> Bonk(
+    public async Task<InteractionMessageProperties> Bonk(
         [SlashCommandParameter(Description = "The user to bonk")]
         User user,
         [SlashCommandParameter(Description = "Duration (format such as 30m, 2h, 1d, etc.")]
@@ -41,20 +42,48 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
             var guild = Context.Guild!;
             var guildUser = await guild.GetUserAsync(user.Id);
             var resolveTime = CalculateResolveTime(duration);
+            var embed = new EmbedProperties()
+                .WithTimestamp(DateTimeOffset.UtcNow)
+                .WithFooter(new EmbedFooterProperties()
+                    .WithText(""))
+                .WithImage("https://pbs.twimg.com/media/EaYf1a_UcAEpOwC.jpg");
+            var message = new InteractionMessageProperties();
 
             if (guildUser.RoleIds.Any(role => role == bonkRole))
             {
-                return "User is already sleeping."; // Next to insert a record to data JSON.
+                embed.WithDescription($"<@{guildUser.Id}> is already sleep bonked.");
+                return
+                    message.AddEmbeds(embed);
             }
 
             await guildUser.AddRoleAsync(bonkRole);
+            await RoleStorage.Add(guild.Id, guildUser.Id, bonkRole, DateTime.Now, resolveTime);
 
-            return
-                $"Got user: {guildUser.Username}\nCreatedTime: {DateTime.Now}\nResolveTime: {resolveTime}\nRole(s) Added: {bonkRole}";
+            embed
+                .WithDescription($"<@{guildUser.Id}> has been sleep bonked.")
+                .WithColor(new(0x5865F2))
+                .WithAuthor(new EmbedAuthorProperties()
+                    .WithName(guildUser.Username)
+                    .WithIconUrl(guildUser.DefaultAvatarUrl.ToString())
+                )
+                .AddFields(
+                    new EmbedFieldProperties()
+                        .WithName("Expires")
+                        .WithValue(resolveTime.ToString())
+                        .WithInline(),
+                    new EmbedFieldProperties()
+                        .WithName("Expires")
+                        .WithValue(duration)
+                        .WithInline());
+
+            return message.AddEmbeds(embed);
+
+            // return
+            //     $"Got user: {guildUser.Username}\nCreatedTime: {DateTime.Now}\nResolveTime: {resolveTime}\nRole(s) Added: {bonkRole}";
         }
         catch (Exception ex)
         {
-            return $"{ex}";
+            return new InteractionMessageProperties().AddEmbeds(new EmbedProperties().WithDescription(ex.Message));
         }
     }
 
