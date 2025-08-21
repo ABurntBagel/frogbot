@@ -10,23 +10,6 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
     [SlashCommand("ping", "Ping!")]
     public static string Ping() => "Pong! 🏓";
 
-    [SlashCommand("c", "c")]
-    public static string C(
-        [SlashCommandParameter(Description = "Duration (format such as 30m, 2h, 1d, etc.")]
-        string duration)
-    {
-        try
-        {
-            var dur = CalculateResolveTime(duration);
-
-            return $"{dur}";
-        }
-        catch (ArgumentException ex)
-        {
-            return ex.Message;
-        }
-    }
-
     private const ulong BonkRole = 1401795286116073558;
 
     [SlashCommand("unbonk", "Unbonk a user.", DefaultGuildUserPermissions = Permissions.ModerateUsers,
@@ -94,9 +77,6 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
                         .WithInline());
 
             return message.AddEmbeds(embed);
-
-            // return
-            //     $"Got user: {guildUser.Username}\nCreatedTime: {DateTime.Now}\nResolveTime: {resolveTime}\nRole(s) Added: {bonkRole}";
         }
         catch (Exception ex)
         {
