@@ -27,6 +27,28 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
         }
     }
 
+    private const ulong BonkRole = 1401795286116073558;
+
+    [SlashCommand("unbonk", "Unbonk a user.", DefaultGuildUserPermissions = Permissions.ModerateUsers,
+        Contexts = [InteractionContextType.Guild])]
+    public async Task<InteractionMessageProperties> Unbonk(
+        [SlashCommandParameter(Description = "The user to un-bonk")] User user)
+    {
+        var guildUser = await Context.Guild!.GetUserAsync(user.Id);
+        var result = guildUser.RoleIds.Any(role => role == BonkRole);
+        if (result)
+        {
+            await guildUser.RemoveRoleAsync(BonkRole);
+            return new InteractionMessageProperties().AddEmbeds(
+                new EmbedProperties().WithDescription($"<@{guildUser.Id}> is no longer sleep bonked."));
+        }
+        else
+        {
+            return new InteractionMessageProperties().AddEmbeds(
+                new EmbedProperties().WithDescription($"<@{guildUser.Id}> is not sleep bonked!"));
+        }
+    }
+
     [SlashCommand("bonk", "Hit 'em with the sleep bonk.", DefaultGuildUserPermissions = Permissions.ModerateUsers,
         Contexts = [InteractionContextType.Guild])]
     public async Task<InteractionMessageProperties> Bonk(
@@ -37,7 +59,6 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
     {
         try
         {
-            const ulong bonkRole = 1401795286116073558; //Temporary for dev purposes
             Console.WriteLine($"Got: {user.Id}");
             var guild = Context.Guild!;
             var guildUser = await guild.GetUserAsync(user.Id);
@@ -49,15 +70,15 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
                 .WithImage("https://pbs.twimg.com/media/EaYf1a_UcAEpOwC.jpg");
             var message = new InteractionMessageProperties();
 
-            if (guildUser.RoleIds.Any(role => role == bonkRole))
+            if (guildUser.RoleIds.Any(role => role == BonkRole))
             {
                 embed.WithDescription($"<@{guildUser.Id}> is already sleep bonked.");
                 return
                     message.AddEmbeds(embed);
             }
 
-            await guildUser.AddRoleAsync(bonkRole);
-            await RoleStorage.Add(guild.Id, guildUser.Id, bonkRole, DateTime.Now, resolveTime);
+            await guildUser.AddRoleAsync(BonkRole);
+            await RoleStorage.Add(guild.Id, guildUser.Id, BonkRole, DateTime.Now, resolveTime);
 
             embed
                 .WithDescription($"<@{guildUser.Id}> has been sleep bonked.")
@@ -70,10 +91,6 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
                     new EmbedFieldProperties()
                         .WithName("Expires")
                         .WithValue(resolveTime.ToString())
-                        .WithInline(),
-                    new EmbedFieldProperties()
-                        .WithName("Expires")
-                        .WithValue(duration)
                         .WithInline());
 
             return message.AddEmbeds(embed);
