@@ -39,22 +39,13 @@ public class Program
 
             Console.WriteLine("Configuration created. You can find it in the project root.");
 
-            File.WriteAllText("appsettings.json", JsonSerializer.Serialize(configData, new JsonSerializerOptions
+            await File.WriteAllTextAsync("appsettings.json", JsonSerializer.Serialize(configData, new JsonSerializerOptions
             {
                 WriteIndented = true
             }));
         }
 
-
-        // Build configuration
-        var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .Build();
-
-        // Load bot token from configuration and validate
-        var botToken = config["Discord:Token"];
-
+        var botToken = GetBotToken();
         if (string.IsNullOrWhiteSpace(botToken)) throw new Exception("Bot token not found.");
         Console.WriteLine("Configuration loaded.");
 
@@ -113,5 +104,20 @@ public class Program
 
         await Client.StartAsync();
         await Task.Delay(-1);
+        return;
+
+        string? GetBotToken()
+        {
+            if (File.Exists("/.dockerenv"))
+                return Environment.GetEnvironmentVariable("DISCORD_TOKEN");
+
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            // Load bot token from configuration and validate
+            return config["Discord:Token"];
+        }
     }
 }
