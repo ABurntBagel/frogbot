@@ -1,4 +1,6 @@
-﻿using NetCord;
+﻿using System;
+using System.IO;
+using NetCord;
 using NetCord.Gateway;
 using NetCord.Logging;
 using NetCord.Rest;
@@ -6,12 +8,15 @@ using NetCord.Services;
 using NetCord.Services.ApplicationCommands;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Frogbot;
 
 public class Program
 {
     public static GatewayClient Client { get; private set; } = null!;
+
     public static async Task Main(string[] args)
     {
         // Check if appsettings.json exists and if not, create one
