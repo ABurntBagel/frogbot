@@ -50,6 +50,7 @@ public class Program
         Console.WriteLine("Configuration loaded.");
 
 
+
         // Create the client
         Client = new(new BotToken(botToken), new GatewayClientConfiguration
         {
