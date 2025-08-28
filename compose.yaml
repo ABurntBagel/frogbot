@@ -1,0 +1,54 @@
+﻿version: "3.9"
+
+services:
+  frogbot:
+    build:
+      context: .
+      target: dev
+    working_dir: /workspace
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/workspace:cached
+      - dotnet-nuget:/root/.nuget/packages
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Default: Host=postgres;Port=5432;Database=frogdb;Username=devadmin;Password=devadmin;Include Error Detail=true
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: devadmin
+      POSTGRES_PASSWORD: devadmin
+      POSTGRES_DB: frogdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro   # optional SQL seed scripts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appuser -d appdb"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Optional: a web UI to browse the DB
+  pgadmin:
+    image: dpage/pgadmin4:8
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: seb@burntbagel.dev
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  dotnet-nuget:
