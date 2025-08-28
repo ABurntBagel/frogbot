@@ -1,0 +1,7 @@
+{
+  "name": "Frogbot Development",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "frogbot",
+  "workspaceFolder": "/app",
+  "postCreateCommand": "dotnet restore"
+}

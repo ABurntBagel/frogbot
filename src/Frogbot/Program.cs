@@ -48,7 +48,7 @@ public class Program
         var botToken = GetBotToken();
         if (string.IsNullOrWhiteSpace(botToken)) throw new Exception("Bot token not found.");
         Console.WriteLine("Configuration loaded.");
-        Console.WriteLine("Got the config!");
+
 
 
         // Create the client
