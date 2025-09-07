@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Frogbot": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

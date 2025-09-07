@@ -7,10 +7,29 @@ using System.Threading.Tasks;
 using Frogbot.Database.Models;
 using Frogbot.Database.Services;
 
-MongoClient client = new("mongodb://admin:admin@localhost:27017");
-IMongoDatabase database = client.GetDatabase("frogbot");
+internal class Program
+{
+    public static async Task Main(string[] args)
+    {
+        MongoClient client = new("mongodb://admin:admin@localhost:27017");
+        IMongoDatabase database = client.GetDatabase("frogbot");
 
-List<User> users = UserService.CreateUsers(5);
+        List<User> users = UserService.CreateUsers(5);
 
-UserService userService = new(database, "users");
-await userService.InsertUsersAsync(users);
+        List<string> collections = [];
+
+        var collection = "1401795286116073553";
+
+// var collectionExists = collections.AsEnumerable()
+//                                   .Contains(collection);
+
+// if (!collections.AsEnumerable()
+//                 .Contains(collection))
+// {
+//     database.CreateCollection(collection);
+// }
+
+        UserService userService = new(database, collection);
+        await userService.InsertManyAsync(users);
+    }
+}

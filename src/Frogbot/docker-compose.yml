@@ -2,7 +2,7 @@ services:
   frogbot:
     build:
       context: .
-      target: development  # Target development stage in Dockerfile
+      target: development
     volumes:
       # Mount source code for hot reload
       - .:/app
@@ -28,7 +28,6 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
-      start_period: 20s # Optional: Allows time for MongoDB to initialize
 
   mongo-express:
     image: mongo-express

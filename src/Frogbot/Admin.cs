@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using NetCord;
 using NetCord.Rest;
 using NetCord.Services.ApplicationCommands;
+using Frogbot.Database;
+using NetCord.Gateway;
 
 namespace Frogbot;
 
@@ -18,10 +20,12 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
     [SlashCommand("unbonk", "Unbonk a user.", DefaultGuildUserPermissions = Permissions.ModerateUsers,
         Contexts = [InteractionContextType.Guild])]
     public async Task<InteractionMessageProperties> Unbonk(
-        [SlashCommandParameter(Description = "The user to un-bonk")] User user)
+        [SlashCommandParameter(Description = "The user to un-bonk")]
+        User user)
     {
-        var guildUser = await Context.Guild!.GetUserAsync(user.Id);
+        GuildUser guildUser = await this.Context.Guild!.GetUserAsync(user.Id);
         var result = guildUser.RoleIds.Any(role => role == BonkRole);
+
         if (result)
         {
             await guildUser.RemoveRoleAsync(BonkRole);
@@ -46,14 +50,14 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
         try
         {
             Console.WriteLine($"Got: {user.Id}");
-            var guild = Context.Guild!;
-            var guildUser = await guild.GetUserAsync(user.Id);
-            var resolveTime = CalculateResolveTime(duration);
-            var embed = new EmbedProperties()
-                .WithTimestamp(DateTimeOffset.UtcNow)
-                .WithFooter(new EmbedFooterProperties()
-                    .WithText(""))
-                .WithImage("https://pbs.twimg.com/media/EaYf1a_UcAEpOwC.jpg");
+            Guild guild = Context.Guild!;
+            GuildUser guildUser = await guild.GetUserAsync(user.Id);
+            DateTime resolveTime = CalculateResolveTime(duration);
+            EmbedProperties embed = new EmbedProperties()
+                                    .WithTimestamp(DateTimeOffset.UtcNow)
+                                    .WithFooter(new EmbedFooterProperties().WithText(""))
+                                    .WithImage("https://pbs.twimg.com/media/EaYf1a_UcAEpOwC.jpg");
+
             var message = new InteractionMessageProperties();
 
             if (guildUser.RoleIds.Any(role => role == BonkRole))
@@ -70,8 +74,8 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
                 .WithDescription($"<@{guildUser.Id}> has been sleep bonked.")
                 .WithColor(new(0x5865F2))
                 .WithAuthor(new EmbedAuthorProperties()
-                    .WithName(guildUser.Username)
-                    .WithIconUrl(guildUser.DefaultAvatarUrl.ToString())
+                            .WithName(guildUser.Username)
+                            .WithIconUrl(guildUser.DefaultAvatarUrl.ToString())
                 )
                 .AddFields(
                     new EmbedFieldProperties()

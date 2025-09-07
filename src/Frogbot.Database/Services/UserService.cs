@@ -17,7 +17,7 @@ public class UserService(IMongoDatabase database, string collectionName) : BaseS
 
             User user = new(RandId(), "New Data!", RandId());
 
-            Console.WriteLine(user);
+            // Console.WriteLine(user);
 
             users.Add(user);
             continue;
@@ -25,7 +25,7 @@ public class UserService(IMongoDatabase database, string collectionName) : BaseS
             string RandId() => random.NextInt64()
                                      .ToString();
         }
-
+        
         Console.WriteLine($"Added {users.Count} items to list.");
         return users;
     }

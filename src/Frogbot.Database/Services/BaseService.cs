@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using NetCord;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +11,17 @@ public abstract class BaseService<T>(IMongoDatabase database, string collectionN
 {
     private readonly IMongoCollection<T> _collection = database.GetCollection<T>(collectionName);
 
-    public virtual async Task InsertUserAsync(T entity)
+    public virtual async Task InsertAsync(T entity)
     {
         await this._collection.InsertOneAsync(entity);
     }
 
-    public virtual async Task InsertUsersAsync(List<T> entity)
+    public virtual async Task InsertManyAsync(IEnumerable<T> entity)
     {
         await this._collection.InsertManyAsync(entity);
     }
 
-    public virtual Task UpdateUserAsync(T entity)
+    public virtual Task UpdateAsync(T entity)
     {
         return Task.CompletedTask;
     }
