@@ -12,9 +12,6 @@ RUN dotnet restore
 # Copy the rest of the application
 COPY . ./
 
-# For dev containers: keep running, let dev container handle execution
-CMD ["sleep", "infinity"]
-
 # Build the app in a separate stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src

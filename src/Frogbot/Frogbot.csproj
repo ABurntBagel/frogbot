@@ -6,11 +6,13 @@
         <Nullable>enable</Nullable>
         <OutputType>Exe</OutputType>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>.</DockerfileContext>
 
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
 
       <PackageReference Include="NetCord" Version="1.0.0-alpha.410" />
       <PackageReference Include="NetCord.Hosting" Version="1.0.0-alpha.410" />
@@ -23,10 +25,11 @@
       <None Update="appsettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <Compile Remove="Services\MongoService.cs" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include=".devcontainer\devcontainer.json" />
+      <ProjectReference Include="..\Frogbot.Database\Frogbot.Database.csproj" />
     </ItemGroup>
 
 </Project>

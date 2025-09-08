@@ -16,6 +16,7 @@ namespace Frogbot;
 public class Program
 {
     public static GatewayClient Client { get; private set; } = null!;
+    // public static ConsoleLogger Logger { get; private set; } = null!;
 
     public static async Task Main(string[] args)
     {
@@ -27,7 +28,8 @@ public class Program
                 "Please enter your Discord bot token. Visit https://discord.com/developers/applications if you need one.");
             Console.Write("Bot Token > ");
 
-            var token = Console.ReadLine()?.Trim() ?? "";
+            var token = Console.ReadLine()
+                ?.Trim() ?? "";
 
             var configData = new
             {
@@ -39,10 +41,11 @@ public class Program
 
             Console.WriteLine("Configuration created. You can find it in the project root.");
 
-            await File.WriteAllTextAsync("appsettings.json", JsonSerializer.Serialize(configData, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            }));
+            await File.WriteAllTextAsync("appsettings.json", JsonSerializer.Serialize(configData,
+                new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                }));
         }
 
         var botToken = GetBotToken();
@@ -50,9 +53,8 @@ public class Program
         Console.WriteLine("Configuration loaded.");
 
 
-
         // Create the client
-        Client = new(new BotToken(botToken), new GatewayClientConfiguration
+        Client = new GatewayClient(new BotToken(botToken), new GatewayClientConfiguration
         {
             Intents = GatewayIntents.AllNonPrivileged,
             Logger = new ConsoleLogger(),
@@ -101,7 +103,7 @@ public class Program
         await applicationCommandService.RegisterCommandsAsync(Client.Rest, Client.Id);
 
         var worker = new RoleWorker();
-        _ = worker.StartAsync(CancellationToken.None); // Fire and forget
+        _ = worker.StartAsync(CancellationToken.None);
 
         await Client.StartAsync();
         await Task.Delay(-1);
@@ -109,7 +111,7 @@ public class Program
 
         string? GetBotToken()
         {
-            if (File.Exists("/.dockerenv"))
+            if (File.Exists("/.dockerenv") || File.Exists(".env"))
                 return Environment.GetEnvironmentVariable("DISCORD_TOKEN");
 
             var config = new ConfigurationBuilder()
