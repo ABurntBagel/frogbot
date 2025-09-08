@@ -29,10 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include=".devcontainer\devcontainer.json" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Frogbot.Database\Frogbot.Database.csproj" />
     </ItemGroup>
 

@@ -11,6 +11,10 @@
       <PackageReference Include="MongoDB.Driver" Version="3.4.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Program.cs" />
+    </ItemGroup>
+
 
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Diagnostics.CodeAnalysis;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Serializers;
@@ -9,21 +10,14 @@ using Frogbot.Database.Services;
 
 namespace Frogbot.Database;
 
-public class Main
+public static class Db
 {
-    public MongoClient Client = new("mongodb://admin:admin@localhost:27017");
-    public IMongoDatabase Database = Client.GetDatabase("frogbot");
-    public static async Task DB()
+    public static MongoClient Client { get; private set; } = new MongoClient("mongodb://admin:admin@localhost:27017");
+    public static IMongoDatabase DbObject { get; private set; } = Client.GetDatabase("frogbot");
+
+    public static void Main(string[] args)
     {
-
-
-        List<User> users = UserService.CreateUsers(5);
-
-        List<string> collections = [];
-
-        var collection = "1401795286116073553";
-
-        UserService userService = new(Database, collection);
-        await userService.InsertManyAsync(users);
+        Console.WriteLine("DB SERVICE ASSIGNED CLIENT");
     }
+
 }

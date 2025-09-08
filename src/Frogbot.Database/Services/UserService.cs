@@ -4,7 +4,6 @@ using MongoDB.Driver;
 
 namespace Frogbot.Database.Services;
 
-
 public class UserService(IMongoDatabase database, string collectionName) : BaseService<User>(database, collectionName)
 {
     public static List<User> CreateUsers(int numUsers)
@@ -28,5 +27,12 @@ public class UserService(IMongoDatabase database, string collectionName) : BaseS
         
         Console.WriteLine($"Added {users.Count} items to list.");
         return users;
+    }
+
+    public override async Task<string> InsertAsync(User entity)
+    {
+        await base.InsertAsync(entity);
+
+        return "Inserted!";
     }
 }

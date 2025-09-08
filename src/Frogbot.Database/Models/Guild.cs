@@ -3,21 +3,12 @@
 //
 // namespace Frogbot.Database.Models;
 //
-// public class Guild(ulong guildId, Roles roles, Channels channels)
+// public class Guild(string guildId, Roles roles, Channels channels)
 // {
 //     public ObjectId Id { get; set; }
-//     // private string GuildId { get; private set ; } = guildId;
-//     public string GuildId
-//     {
-//         get { return guildId; }
-//         set
-//         {
-//
-//         }
-//
-//     }
-//     private Roles Roles { get; set; } = roles;
-//     private Channels Channels { get; set; } = channels;
+//     public string GuildId { get; set; } = guildId;
+//     public Roles Roles { get; set; } = roles;
+//     public required Channels Channels { get; set; }
 // }
 //
 // public abstract class Roles(string timeout, string announcement)

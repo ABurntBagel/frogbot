@@ -16,6 +16,7 @@ namespace Frogbot;
 public class Program
 {
     public static GatewayClient Client { get; private set; } = null!;
+    // public static ConsoleLogger Logger { get; private set; } = null!;
 
     public static async Task Main(string[] args)
     {
@@ -53,7 +54,7 @@ public class Program
 
 
         // Create the client
-        Client = new(new BotToken(botToken), new GatewayClientConfiguration
+        Client = new GatewayClient(new BotToken(botToken), new GatewayClientConfiguration
         {
             Intents = GatewayIntents.AllNonPrivileged,
             Logger = new ConsoleLogger(),
