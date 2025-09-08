@@ -119,7 +119,8 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
 
             return new InteractionMessageProperties().AddEmbeds(
                 new EmbedProperties()
-                    .WithDescription($"UserId:\t{user.Id.ToString()}\n Username:\t{user.Username}\n GuildId:\t{guild.Id.ToString()}\nIsBot:\t{user.IsBot}")
+                    .WithDescription(
+                        $"UserId:\t{user.Id.ToString()}\n Username:\t{user.Username}\n GuildId:\t{guild.Id.ToString()}\nIsBot:\t{user.IsBot}")
                     .WithFooter(new EmbedFooterProperties().WithText($"_id:{targetUser.Id}")));
         }
         catch (Exception e)
