@@ -21,7 +21,7 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
 
     #region /bonk
 
-    [SlashCommand("bonk", "Hit 'em with the sleep bonk.", DefaultGuildUserPermissions = Permissions.ModerateUsers,
+    [SlashCommand("bonk", "Hit 'em with the sleep bonk.", DefaultGuildPermissions = Permissions.ModerateUsers,
         Contexts = [InteractionContextType.Guild])]
     public async Task<InteractionMessageProperties> Bonk(
         [SlashCommandParameter(Description = "The user to bonk")]
@@ -77,7 +77,7 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
 
     #region /unbonk
 
-    [SlashCommand("unbonk", "Unbonk a user.", DefaultGuildUserPermissions = Permissions.ModerateUsers,
+    [SlashCommand("unbonk", "Unbonk a user.", DefaultGuildPermissions = Permissions.ModerateUsers,
         Contexts = [InteractionContextType.Guild])]
     public async Task<InteractionMessageProperties> Unbonk(
         [SlashCommandParameter(Description = "The user to un-bonk")]
