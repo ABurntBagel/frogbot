@@ -1,0 +1,30 @@
+﻿<Solution>
+    <Configurations>
+        <Platform Name="Any CPU"/>
+        <Platform Name="x64"/>
+        <Platform Name="x86"/>
+    </Configurations>
+    <Folder Name="/Solution Items/">
+        <File Path=".editorconfig"/>
+    </Folder>
+    <Project Path="Frogbot.Database\Frogbot.Database.csproj" Type="Classic C#">
+        <Configuration Solution="Debug|x64" Project="Debug|Any CPU"/>
+        <Configuration Solution="Debug|x86" Project="Debug|Any CPU"/>
+        <Configuration Solution="Release|x64" Project="Release|Any CPU"/>
+        <Configuration Solution="Release|x86" Project="Release|Any CPU"/>
+    </Project>
+    <Project Path="Frogbot\Frogbot.csproj" Type="Classic C#">
+        <Configuration Solution="Debug|x64" Project="Debug|Any CPU"/>
+        <Configuration Solution="Debug|x86" Project="Debug|Any CPU"/>
+        <Configuration Solution="Release|x64" Project="Release|Any CPU"/>
+        <Configuration Solution="Release|x86" Project="Release|Any CPU"/>
+    </Project>
+    <Folder Name="/tests/">
+        <Project Path="tests\Frogbot.Tests\Frogbot.Tests.csproj" Type="Classic C#">
+            <Configuration Solution="Debug|x64" Project="Debug|Any CPU"/>
+            <Configuration Solution="Debug|x86" Project="Debug|Any CPU"/>
+            <Configuration Solution="Release|x64" Project="Release|Any CPU"/>
+            <Configuration Solution="Release|x86" Project="Release|Any CPU"/>
+        </Project>
+    </Folder>
+</Solution>
