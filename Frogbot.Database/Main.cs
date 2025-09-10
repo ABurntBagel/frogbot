@@ -15,9 +15,5 @@ public static class Db
     public static MongoClient Client { get; private set; } = new MongoClient("mongodb://admin:admin@localhost:27017");
     public static IMongoDatabase DbObject { get; private set; } = Client.GetDatabase("frogbot");
 
-    public static void Main(string[] args)
-    {
-        Console.WriteLine("DB SERVICE ASSIGNED CLIENT");
-    }
-
+    public static void Main(string[] args) => Console.WriteLine("DB SERVICE ASSIGNED CLIENT");
 }

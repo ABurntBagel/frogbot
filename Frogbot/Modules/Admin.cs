@@ -1,6 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using Frogbot.Database;
 using Frogbot.Database.Services;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using NetCord;
 using NetCord.Gateway;
@@ -21,7 +23,7 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
 
     #region /bonk
 
-    [SlashCommand("bonk", "Hit 'em with the sleep bonk.", DefaultGuildUserPermissions = Permissions.ModerateUsers,
+    [SlashCommand("bonk", "Hit 'em with the sleep bonk.", DefaultGuildPermissions = Permissions.ModerateUsers,
         Contexts = [InteractionContextType.Guild])]
     public async Task<InteractionMessageProperties> Bonk(
         [SlashCommandParameter(Description = "The user to bonk")]
@@ -62,7 +64,7 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
                 .AddFields(
                     new EmbedFieldProperties()
                         .WithName("Expires")
-                        .WithValue(resolveTime.ToString())
+                        .WithValue(resolveTime.ToString(CultureInfo.CurrentCulture))
                         .WithInline());
 
             return message.AddEmbeds(embed);
@@ -77,7 +79,7 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
 
     #region /unbonk
 
-    [SlashCommand("unbonk", "Unbonk a user.", DefaultGuildUserPermissions = Permissions.ModerateUsers,
+    [SlashCommand("unbonk", "Unbonk a user.", DefaultGuildPermissions = Permissions.ModerateUsers,
         Contexts = [InteractionContextType.Guild])]
     public async Task<InteractionMessageProperties> Unbonk(
         [SlashCommandParameter(Description = "The user to un-bonk")]
@@ -102,6 +104,7 @@ public class Admin : ApplicationCommandModule<ApplicationCommandContext>
     #endregion
 
     #endregion
+
 
     [SlashCommand("dump", "Dump user data to db", Contexts = [InteractionContextType.Guild])]
     public async Task<InteractionMessageProperties> Dump([SlashCommandParameter(Description = "target user")] User user)

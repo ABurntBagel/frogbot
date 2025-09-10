@@ -4,8 +4,8 @@ namespace Frogbot;
 
 public class Configuration
 {
-    public MongoClient Client { get; private set; } = new MongoClient("mongodb://admin:admin@localhost:27017"); // TODO Move connection string -> .env
-    public IMongoDatabase DbObject { get; private set; } = Client.GetDatabase("frogbot"); // TODO Move connection string -> .env
+    public static MongoClient Client { get; set; } = new MongoClient("mongodb://admin:admin@localhost:27017"); // TODO Move connection string -> .env
+    public IMongoDatabase DbObject { get; set; } = Client.GetDatabase("frogbot"); // TODO Move connection string -> .env
 
     public RoleConfig Roles { get; set; }
     public ChannelConfig Channels { get; set; }
